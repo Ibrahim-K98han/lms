@@ -1,3 +1,22 @@
+<?php
+require_once '../dbcon.php';
+
+if (isset($_POST['student_register'])) {
+    $fname = $_POST['fname'];
+    $lname = $_POST['lname'];
+    $email = $_POST['email'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $roll = $_POST['roll'];
+    $reg = $_POST['reg'];
+    $phone = $_POST['phone'];
+
+    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+    $result = mysqli_query($con, "INSERT INTO `students`(`fname`, `lname`, `roll`, `reg`, `email`, `username`, `password`, `phone`) VALUES ('$fname','$lname','$roll','$reg','$email','$username','$password_hash','$phone')");
+}
+?>
+
 <!doctype html>
 <html lang="en" class="fixed accounts sign-in">
 
@@ -31,42 +50,61 @@
                 <!--SIGN IN FORM-->
                 <div class="panel mb-none">
                     <div class="panel-content bg-scale-0">
-                        <form>
+                        <form method="POST" action="<?= $_SERVER['PHP_SELF'] ?>">
                             <div class="form-group mt-md">
                                 <span class="input-with-icon">
-                                    <input type="text" class="form-control" id="name" placeholder="Name">
+                                    <input type="text" class="form-control" placeholder="First Name" name="fname">
                                     <i class="fa fa-user"></i>
                                 </span>
                             </div>
                             <div class="form-group mt-md">
                                 <span class="input-with-icon">
-                                    <input type="email" class="form-control" id="email" placeholder="Email">
+                                    <input type="text" class="form-control" placeholder="Last Name" name="lname">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </div>
+                            <div class="form-group mt-md">
+                                <span class="input-with-icon">
+                                    <input type="email" class="form-control" placeholder="Email" name="email">
+                                    <i class="fa fa-envelope"></i>
+                                </span>
+                            </div>
+                            <div class="form-group mt-md">
+                                <span class="input-with-icon">
+                                    <input type="text" class="form-control" placeholder="Username" name="username">
                                     <i class="fa fa-envelope"></i>
                                 </span>
                             </div>
                             <div class="form-group">
                                 <span class="input-with-icon">
-                                    <input type="password" class="form-control" id="password" placeholder="Password">
+                                    <input type="password" class="form-control" placeholder="Password" name="password">
                                     <i class="fa fa-key"></i>
                                 </span>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mt-md">
                                 <span class="input-with-icon">
-                                    <input type="password" class="form-control" id="confirm-password" placeholder="Confirm Password">
-                                    <i class="fa fa-key"></i>
+                                    <input type="text" class="form-control" placeholder="Roll" name="roll" pattern="[0-9]{6}">
+                                    <i class="fa fa-envelope"></i>
                                 </span>
                             </div>
-                            <div class="form-group">
-                                <div class="checkbox-custom checkbox-primary">
-                                    <input type="checkbox" id="terms" value="option1">
-                                    <label class="check" for="terms">I agree </label> to the <a href="#">Terms and Conditions</a>
-                                </div>
+                            <div class="form-group mt-md">
+                                <span class="input-with-icon">
+                                    <input type="text" class="form-control" placeholder="Reg. No" name="reg" pattern="[0-9]{6}">
+                                    <i class="fa fa-envelope"></i>
+                                </span>
                             </div>
+                            <div class="form-group mt-md">
+                                <span class="input-with-icon">
+                                    <input type="text" class="form-control" placeholder="01*********" name="phone" pattern="01[1|5|6|7|8|9][0-9]{8}">
+                                    <i class="fa fa-envelope"></i>
+                                </span>
+                            </div>
+
                             <div class="form-group">
-                                <a href="index.html" class="btn btn-primary btn-block">Register</a>
+                                <input class="btn btn-primary btn-block" type="submit" name="student_register" value="Register">
                             </div>
                             <div class="form-group text-center">
-                                Have an account?, <a href="pages_sign-in.html">Sign In</a>
+                                Have an account?, <a href="sign-in.php">Sign In</a>
                             </div>
                         </form>
                     </div>
