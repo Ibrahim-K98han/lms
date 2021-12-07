@@ -11,9 +11,43 @@ if (isset($_POST['student_register'])) {
     $reg = $_POST['reg'];
     $phone = $_POST['phone'];
 
-    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+    $input_errors = array();
+    if (empty($fname)) {
+        $input_errors['fname'] = "First name filed is required!";
+    }
+    if (empty($lname)) {
+        $input_errors['lname'] = "Last name filed is required!";
+    }
+    if (empty($email)) {
+        $input_errors['email'] = "Email filed is required!";
+    }
+    if (empty($username)) {
+        $input_errors['username'] = "Username filed is required!";
+    }
+    if (empty($password)) {
+        $input_errors['password'] = "Password filed is required!";
+    }
+    if (empty($roll)) {
+        $input_errors['roll'] = "Roll filed is required!";
+    }
+    if (empty($reg)) {
+        $input_errors['reg'] = "Reg filed is required!";
+    }
+    if (empty($phone)) {
+        $input_errors['phone'] = "Phone filed is required!";
+    }
 
-    $result = mysqli_query($con, "INSERT INTO `students`(`fname`, `lname`, `roll`, `reg`, `email`, `username`, `password`, `phone`) VALUES ('$fname','$lname','$roll','$reg','$email','$username','$password_hash','$phone')");
+
+    if (count($input_errors) == 0) {
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+        $result = mysqli_query($con, "INSERT INTO `students`(`fname`, `lname`, `roll`, `reg`, `email`, `username`, `password`,`status`,`phone`) VALUES ('$fname','$lname','$roll','$reg','$email','$username','$password_hash','0','$phone')");
+
+        if ($result) {
+            $success = "Registration Successfully!";
+        } else {
+            $error = "Somthing Wrong!";
+        }
+    }
 }
 ?>
 
@@ -45,6 +79,19 @@ if (isset($_POST['student_register'])) {
             <!--LOGO-->
             <div class="logo">
                 <h1 class="text-center">LMS</h1>
+                <?php
+                if (isset($success)) {
+                ?>
+                    <div class="alert alert-success" role="alert">
+                        <?= $success ?>
+                        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php
+                }
+                ?>
+
             </div>
             <div class="box">
                 <!--SIGN IN FORM-->
@@ -56,48 +103,88 @@ if (isset($_POST['student_register'])) {
                                     <input type="text" class="form-control" placeholder="First Name" name="fname">
                                     <i class="fa fa-user"></i>
                                 </span>
+                                <?php
+                                if (isset($input_errors['fname'])) {
+                                    echo '<span class="input-error">' . $input_errors['fname'] . '</span>';
+                                }
+                                ?>
                             </div>
                             <div class="form-group mt-md">
                                 <span class="input-with-icon">
                                     <input type="text" class="form-control" placeholder="Last Name" name="lname">
                                     <i class="fa fa-user"></i>
                                 </span>
+                                <?php
+                                if (isset($input_errors['lname'])) {
+                                    echo '<span class="input-error">' . $input_errors['lname'] . '</span>';
+                                }
+                                ?>
                             </div>
                             <div class="form-group mt-md">
                                 <span class="input-with-icon">
                                     <input type="email" class="form-control" placeholder="Email" name="email">
                                     <i class="fa fa-envelope"></i>
                                 </span>
+                                <?php
+                                if (isset($input_errors['email'])) {
+                                    echo '<span class="input-error">' . $input_errors['email'] . '</span>';
+                                }
+                                ?>
                             </div>
                             <div class="form-group mt-md">
                                 <span class="input-with-icon">
                                     <input type="text" class="form-control" placeholder="Username" name="username">
                                     <i class="fa fa-envelope"></i>
                                 </span>
+                                <?php
+                                if (isset($input_errors['username'])) {
+                                    echo '<span class="input-error">' . $input_errors['username'] . '</span>';
+                                }
+                                ?>
                             </div>
                             <div class="form-group">
                                 <span class="input-with-icon">
                                     <input type="password" class="form-control" placeholder="Password" name="password">
                                     <i class="fa fa-key"></i>
                                 </span>
+                                <?php
+                                if (isset($input_errors['password'])) {
+                                    echo '<span class="input-error">' . $input_errors['password'] . '</span>';
+                                }
+                                ?>
                             </div>
                             <div class="form-group mt-md">
                                 <span class="input-with-icon">
                                     <input type="text" class="form-control" placeholder="Roll" name="roll" pattern="[0-9]{6}">
                                     <i class="fa fa-envelope"></i>
                                 </span>
+                                <?php
+                                if (isset($input_errors['roll'])) {
+                                    echo '<span class="input-error">' . $input_errors['roll'] . '</span>';
+                                }
+                                ?>
                             </div>
                             <div class="form-group mt-md">
                                 <span class="input-with-icon">
                                     <input type="text" class="form-control" placeholder="Reg. No" name="reg" pattern="[0-9]{6}">
                                     <i class="fa fa-envelope"></i>
                                 </span>
+                                <?php
+                                if (isset($input_errors['reg'])) {
+                                    echo '<span class="input-error">' . $input_errors['reg'] . '</span>';
+                                }
+                                ?>
                             </div>
                             <div class="form-group mt-md">
                                 <span class="input-with-icon">
                                     <input type="text" class="form-control" placeholder="01*********" name="phone" pattern="01[1|5|6|7|8|9][0-9]{8}">
                                     <i class="fa fa-envelope"></i>
                                 </span>
+                                <?php
+                                if (isset($input_errors['phone'])) {
+                                    echo '<span class="input-error">' . $input_errors['phone'] . '</span>';
+                                }
+                                ?>
                             </div>
 
                             <div class="form-group">
